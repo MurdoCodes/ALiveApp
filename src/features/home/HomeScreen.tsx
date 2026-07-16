@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -13,10 +13,19 @@ import { useHomeStore } from './store/useHomeStore';
 import CountryTab from './components/CountryTab';
 import { useHomeData } from './hooks/useHomeData';
 import LiveCard from './components/LiveCard';
+import SearchModal from '../../components/SearchModal';
 
 const HomeScreen: React.FC = () => {
+  const [isSearchModalVisible, setSearchModalVisible] = useState(false);
   const { liveStreams, countries, isLoading } = useHomeStore();
   const { onRefresh, isRefreshing } = useHomeData();
+
+  // Filter streams by selected country
+  const selectedCountry = useHomeStore(state => state.selectedCountry);
+  const filteredStreams =
+    selectedCountry === 'all'
+      ? liveStreams
+      : liveStreams.filter(stream => stream.country === selectedCountry);
 
   // Loading state
   if (isLoading && liveStreams.length === 0) {
@@ -27,13 +36,13 @@ const HomeScreen: React.FC = () => {
       </View>
     );
   }
-  
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#0B0C10" />
 
       {/* Header */}
-      <HomeHeader />
+      <HomeHeader onSearchPress={() => setSearchModalVisible(true)} />
 
       {/* Country Tabs */}
       <View style={styles.tabsContainer}>
@@ -49,7 +58,7 @@ const HomeScreen: React.FC = () => {
 
       {/* Live Feed */}
       <FlatList
-        data={liveStreams}
+        data={filteredStreams}
         keyExtractor={item => item.id}
         numColumns={2}
         contentContainerStyle={styles.feedContent}
@@ -69,6 +78,13 @@ const HomeScreen: React.FC = () => {
             <Text style={styles.emptyText}>No live streams available</Text>
           </View>
         }
+      />
+
+      {/* Search Modal */}
+      <SearchModal
+        isVisible={isSearchModalVisible}
+        onClose={() => setSearchModalVisible(false)}
+        allStreams={liveStreams}
       />
     </View>
   );

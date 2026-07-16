@@ -3,7 +3,11 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useHomeStore } from '../store/useHomeStore';
 
-const HomeHeader: React.FC = () => {
+interface HomeHeaderProps {
+  onSearchPress?: () => void;
+}
+
+const HomeHeader: React.FC<HomeHeaderProps> = ({ onSearchPress }) => {
   const onlineUsers = useHomeStore(state => state.onlineUsers);
 
   const formatNumber = (num: number) => {
@@ -23,7 +27,11 @@ const HomeHeader: React.FC = () => {
 
       {/* Right: Search & Notification */}
       <View style={styles.rightSection}>
-        <TouchableOpacity style={styles.iconButton} activeOpacity={0.7}>
+        <TouchableOpacity
+          style={styles.iconButton}
+          activeOpacity={0.7}
+          onPress={onSearchPress}
+        >
           <Icon name="search" size={24} color="#FFFFFF" />
         </TouchableOpacity>
 
