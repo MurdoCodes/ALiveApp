@@ -6,15 +6,17 @@ import {
   FlatList,
   ActivityIndicator,
   Text,
+  RefreshControl,
 } from 'react-native';
 import HomeHeader from './components/HomeHeader';
 import { useHomeStore } from './store/useHomeStore';
 import CountryTab from './components/CountryTab';
 import { useHomeData } from './hooks/useHomeData';
+import LiveCard from './components/LiveCard';
 
 const HomeScreen: React.FC = () => {
   const { liveStreams, countries, isLoading } = useHomeStore();
-  useHomeData();
+  const { onRefresh, isRefreshing } = useHomeData();
 
   // Loading state
   if (isLoading && liveStreams.length === 0) {
@@ -44,6 +46,30 @@ const HomeScreen: React.FC = () => {
           renderItem={({ item }) => <CountryTab country={item} />}
         />
       </View>
+
+      {/* Live Feed */}
+      <FlatList
+        data={liveStreams}
+        keyExtractor={item => item.id}
+        numColumns={2}
+        contentContainerStyle={styles.feedContent}
+        columnWrapperStyle={styles.columnWrapper}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefreshing}
+            onRefresh={onRefresh}
+            tintColor="#662D91"
+            colors={['#662D91']}
+          />
+        }
+        renderItem={({ item }) => <LiveCard stream={item} />}
+        ListEmptyComponent={
+          <View style={styles.emptyContainer}>
+            <Text style={styles.emptyText}>No live streams available</Text>
+          </View>
+        }
+      />
     </View>
   );
 };
@@ -70,6 +96,24 @@ const styles = StyleSheet.create({
   },
   tabsContent: {
     paddingHorizontal: 16,
+  },
+  feedContent: {
+    paddingHorizontal: 16,
+    paddingTop: 8,
+    paddingBottom: 20,
+  },
+  columnWrapper: {
+    justifyContent: 'space-between',
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 60,
+  },
+  emptyText: {
+    fontSize: 16,
+    color: '#A0A0A0',
   },
 });
 
