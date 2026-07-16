@@ -48,6 +48,14 @@ const SplashScreen: React.FC = () => {
       withTiming(1.2, { duration: 1500, easing: Easing.inOut(Easing.sin) }),
       withTiming(1, { duration: 1500, easing: Easing.inOut(Easing.sin) }),
     );
+
+    // Auto-Navigate to Login Screen
+    const timer = setTimeout(() => {
+      navigation.replace('Login');
+    }, 2800);
+
+    // Cleanup timer on unmount
+    return () => clearTimeout(timer);
   }, [
     glowScale,
     logoOpacity,
