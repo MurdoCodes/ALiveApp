@@ -52,7 +52,7 @@ export const useAuth = (
       );
       await auth().signInWithCredential(googleCredential);
 
-      navigation.replace('Home');
+      navigation.replace('Main');
     } catch (error: unknown) {
       if (isErrorWithCode(error)) {
         switch (error.code) {
