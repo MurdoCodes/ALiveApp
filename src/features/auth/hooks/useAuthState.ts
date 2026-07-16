@@ -51,7 +51,8 @@ export const useAuth = (
         accessToken,
       );
       await auth().signInWithCredential(googleCredential);
-      console.log('Signed in with Google');
+
+      navigation.replace('Home');
     } catch (error: unknown) {
       if (isErrorWithCode(error)) {
         switch (error.code) {
