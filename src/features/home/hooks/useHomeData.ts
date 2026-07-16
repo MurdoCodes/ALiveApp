@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { Country, useHomeStore } from '../store/useHomeStore';
 // import api from '../../../services/api'; // TODO: uncomment when backend is ready
 import { LiveStream } from '../store/useHomeStore';
@@ -88,30 +88,42 @@ export const useHomeData = () => {
     isRefreshing,
   } = useHomeStore();
 
-  // Fetch data on mount
-  useEffect(() => {
-    fetchHomeData();
-  }, []);
-
-  const fetchHomeData = async () => {
+  const fetchHomeData = useCallback(async () => {
     setLoading(true);
     try {
-      // TODO: Replace with real API calls
-      // const response = await api.get('/home/feed');
-      // setLiveStreams(response.data.streams);
-
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 800));
-
+      await new Promise<void>(resolve => setTimeout(() => resolve(), 800));
       setLiveStreams(MOCK_LIVE_STREAMS);
       setCountries(MOCK_COUNTRIES);
-      setOnlineUsers(12450); // Mock online user count
+      setOnlineUsers(12450);
     } catch (error) {
       console.error('Failed to fetch home data:', error);
     } finally {
       setLoading(false);
     }
-  };
+  }, [setLiveStreams, setCountries, setOnlineUsers, setLoading]);
+  useEffect(() => {
+    fetchHomeData();
+  }, [fetchHomeData]);
+
+  //   const fetchHomeData = async () => {
+  //     setLoading(true);
+  //     try {
+  //       // TODO: Replace with real API calls
+  //       // const response = await api.get('/home/feed');
+  //       // setLiveStreams(response.data.streams);
+
+  //       // Simulate API delay
+  //       await new Promise<void>(resolve => setTimeout(() => resolve(), 800));
+
+  //       setLiveStreams(MOCK_LIVE_STREAMS);
+  //       setCountries(MOCK_COUNTRIES);
+  //       setOnlineUsers(12450); // Mock online user count
+  //     } catch (error) {
+  //       console.error('Failed to fetch home data:', error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
   // Pull-to-refresh handler
   const onRefresh = async () => {
