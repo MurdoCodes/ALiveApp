@@ -5,10 +5,15 @@ import { useHomeStore } from '../../../store/useHomeStore';
 
 interface HomeHeaderProps {
   onSearchPress?: () => void;
+  onNotificationPress?: () => void;
 }
 
-const HomeHeader: React.FC<HomeHeaderProps> = ({ onSearchPress }) => {
+const HomeHeader: React.FC<HomeHeaderProps> = ({
+  onSearchPress,
+  onNotificationPress,
+}) => {
   const onlineUsers = useHomeStore(state => state.onlineUsers);
+  const unreadCount = useHomeStore(state => state.unreadCount);
 
   const formatNumber = (num: number) => {
     if (num >= 1000) return `${(num / 1000).toFixed(1)}K`;
@@ -35,8 +40,19 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ onSearchPress }) => {
           <Icon name="search" size={24} color="#FFFFFF" />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.iconButton} activeOpacity={0.7}>
+        <TouchableOpacity
+          style={styles.iconButton}
+          activeOpacity={0.7}
+          onPress={onNotificationPress}
+        >
           <Icon name="notifications-outline" size={24} color="#FFFFFF" />
+          {unreadCount > 0 && (
+            <View style={styles.badge}>
+              <Text style={styles.badgeText}>
+                {unreadCount > 99 ? '99+' : unreadCount}
+              </Text>
+            </View>
+          )}
         </TouchableOpacity>
       </View>
     </View>
@@ -75,6 +91,25 @@ const styles = StyleSheet.create({
   },
   iconButton: {
     padding: 8,
+  },
+  badge: {
+    position: 'absolute',
+    top: 2,
+    right: 2,
+    backgroundColor: '#FF0050',
+    borderRadius: 8,
+    minWidth: 16,
+    height: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 4,
+    borderWidth: 2,
+    borderColor: '#0B0C10',
+  },
+  badgeText: {
+    fontSize: 9,
+    fontWeight: '700',
+    color: '#FFFFFF',
   },
 });
 

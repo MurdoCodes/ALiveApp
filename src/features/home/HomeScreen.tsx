@@ -14,8 +14,13 @@ import { useHomeData } from './hooks/useHomeData';
 import LiveCard from './components/LiveCard';
 
 const HomeScreen: React.FC = () => {
-  const { liveStreams, countries, isLoading, setSearchModalVisible } =
-    useHomeStore();
+  const {
+    liveStreams,
+    countries,
+    isLoading,
+    setSearchModalVisible,
+    setNotificationModalVisible,
+  } = useHomeStore();
   const { onRefresh, isRefreshing } = useHomeData();
 
   // Filter streams by selected country
@@ -40,7 +45,10 @@ const HomeScreen: React.FC = () => {
       <StatusBar barStyle="light-content" backgroundColor="#0B0C10" />
 
       {/* Header */}
-      <HomeHeader onSearchPress={() => setSearchModalVisible(true)} />
+      <HomeHeader
+        onSearchPress={() => setSearchModalVisible(true)}
+        onNotificationPress={() => setNotificationModalVisible(true)}
+      />
 
       {/* Country Tabs */}
       <View style={styles.tabsContainer}>

@@ -11,6 +11,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import RootNavigator from './src/navigation/RootNavigator';
 import SearchModal from './src/components/SearchModal';
 import { useHomeStore } from './src/store/useHomeStore';
+import { NotificationModal } from './src/features/notifications';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -46,6 +47,9 @@ function AppContent() {
         onClose={() => setSearchModalVisible(false)}
         allStreams={liveStreams}
       />
+
+      {/* Global Notification Modal */}
+      <NotificationModal />
     </>
   );
 }
