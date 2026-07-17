@@ -13,7 +13,7 @@ import Animated, {
   useAnimatedStyle,
   withTiming,
 } from 'react-native-reanimated';
-import { LiveStream } from '../store/useHomeStore';
+import { LiveStream } from '../../../store/useHomeStore';
 
 interface LiveCardProps {
   stream: LiveStream;

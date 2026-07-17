@@ -28,6 +28,9 @@ interface HomeState {
   isLoading: boolean;
   isRefreshing: boolean;
 
+  // Search Modal State
+  isSearchModalVisible: boolean;
+
   // Actions
   setLiveStreams: (streams: LiveStream[]) => void;
   setCountries: (countries: Country[]) => void;
@@ -35,6 +38,7 @@ interface HomeState {
   setOnlineUsers: (count: number) => void;
   setLoading: (loading: boolean) => void;
   setRefreshing: (refreshing: boolean) => void;
+  setSearchModalVisible: (visible: boolean) => void;
 }
 
 export const useHomeStore = create<HomeState>(set => ({
@@ -45,6 +49,7 @@ export const useHomeStore = create<HomeState>(set => ({
   onlineUsers: 0,
   isLoading: false,
   isRefreshing: false,
+  isSearchModalVisible: false,
 
   // Actions
   setLiveStreams: streams => set({ liveStreams: streams }),
@@ -53,4 +58,5 @@ export const useHomeStore = create<HomeState>(set => ({
   setOnlineUsers: count => set({ onlineUsers: count }),
   setLoading: loading => set({ isLoading: loading }),
   setRefreshing: refreshing => set({ isRefreshing: refreshing }),
+  setSearchModalVisible: visible => set({ isSearchModalVisible: visible }),
 }));

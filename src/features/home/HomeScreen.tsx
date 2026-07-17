@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   View,
   StyleSheet,
@@ -9,14 +8,22 @@ import {
   RefreshControl,
 } from 'react-native';
 import HomeHeader from './components/HomeHeader';
-import { useHomeStore } from './store/useHomeStore';
+import { useHomeStore } from '../../store/useHomeStore';
 import CountryTab from './components/CountryTab';
 import { useHomeData } from './hooks/useHomeData';
 import LiveCard from './components/LiveCard';
 
 const HomeScreen: React.FC = () => {
-  const { liveStreams, countries, isLoading } = useHomeStore();
+  const { liveStreams, countries, isLoading, setSearchModalVisible } =
+    useHomeStore();
   const { onRefresh, isRefreshing } = useHomeData();
+
+  // Filter streams by selected country
+  const selectedCountry = useHomeStore(state => state.selectedCountry);
+  const filteredStreams =
+    selectedCountry === 'all'
+      ? liveStreams
+      : liveStreams.filter(stream => stream.country === selectedCountry);
 
   // Loading state
   if (isLoading && liveStreams.length === 0) {
@@ -27,13 +34,13 @@ const HomeScreen: React.FC = () => {
       </View>
     );
   }
-  
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#0B0C10" />
 
       {/* Header */}
-      <HomeHeader />
+      <HomeHeader onSearchPress={() => setSearchModalVisible(true)} />
 
       {/* Country Tabs */}
       <View style={styles.tabsContainer}>
@@ -49,7 +56,7 @@ const HomeScreen: React.FC = () => {
 
       {/* Live Feed */}
       <FlatList
-        data={liveStreams}
+        data={filteredStreams}
         keyExtractor={item => item.id}
         numColumns={2}
         contentContainerStyle={styles.feedContent}
