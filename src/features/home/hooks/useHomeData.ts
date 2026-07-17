@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react';
-import { Country, useHomeStore } from '../store/useHomeStore';
+import { Country, useHomeStore } from '../../../store/useHomeStore';
 // import api from '../../../services/api'; // TODO: uncomment when backend is ready
-import { LiveStream } from '../store/useHomeStore';
+import { LiveStream } from '../../../store/useHomeStore';
 
 // Mock data - replace with real API calls when backend is ready
 const MOCK_LIVE_STREAMS: LiveStream[] = [

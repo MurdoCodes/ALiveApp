@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -9,15 +8,14 @@ import {
   RefreshControl,
 } from 'react-native';
 import HomeHeader from './components/HomeHeader';
-import { useHomeStore } from './store/useHomeStore';
+import { useHomeStore } from '../../store/useHomeStore';
 import CountryTab from './components/CountryTab';
 import { useHomeData } from './hooks/useHomeData';
 import LiveCard from './components/LiveCard';
-import SearchModal from '../../components/SearchModal';
 
 const HomeScreen: React.FC = () => {
-  const [isSearchModalVisible, setSearchModalVisible] = useState(false);
-  const { liveStreams, countries, isLoading } = useHomeStore();
+  const { liveStreams, countries, isLoading, setSearchModalVisible } =
+    useHomeStore();
   const { onRefresh, isRefreshing } = useHomeData();
 
   // Filter streams by selected country
@@ -78,13 +76,6 @@ const HomeScreen: React.FC = () => {
             <Text style={styles.emptyText}>No live streams available</Text>
           </View>
         }
-      />
-
-      {/* Search Modal */}
-      <SearchModal
-        isVisible={isSearchModalVisible}
-        onClose={() => setSearchModalVisible(false)}
-        allStreams={liveStreams}
       />
     </View>
   );

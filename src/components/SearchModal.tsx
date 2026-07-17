@@ -16,7 +16,7 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { LiveStream } from '../features/home/store/useHomeStore';
+import { LiveStream } from '../store/useHomeStore';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 

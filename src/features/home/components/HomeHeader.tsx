@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { useHomeStore } from '../store/useHomeStore';
+import { useHomeStore } from '../../../store/useHomeStore';
 
 interface HomeHeaderProps {
   onSearchPress?: () => void;

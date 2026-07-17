@@ -4,7 +4,7 @@ import Animated, {
   useAnimatedStyle,
   withTiming,
 } from 'react-native-reanimated';
-import { Country, useHomeStore } from '../store/useHomeStore';
+import { Country, useHomeStore } from '../../../store/useHomeStore';
 
 interface CountryTabProps {
   country: Country;
