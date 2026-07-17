@@ -17,6 +17,16 @@ export interface Country {
   flag: string;
 }
 
+export interface Notification {
+  id: string;
+  type: 'follow' | 'like' | 'comment' | 'live' | 'system';
+  title: string;
+  message: string;
+  avatar?: string;
+  timestamp: string;
+  isRead: boolean;
+}
+
 interface HomeState {
   // Data
   liveStreams: LiveStream[];
@@ -31,6 +41,11 @@ interface HomeState {
   // Search Modal State
   isSearchModalVisible: boolean;
 
+  // Notification State
+  notifications: Notification[];
+  isNotificationModalVisible: boolean;
+  unreadCount: number;
+
   // Actions
   setLiveStreams: (streams: LiveStream[]) => void;
   setCountries: (countries: Country[]) => void;
@@ -39,6 +54,10 @@ interface HomeState {
   setLoading: (loading: boolean) => void;
   setRefreshing: (refreshing: boolean) => void;
   setSearchModalVisible: (visible: boolean) => void;
+  setNotifications: (notifications: Notification[]) => void;
+  setNotificationModalVisible: (visible: boolean) => void;
+  markAllAsRead: () => void;
+  markAsRead: (id: string) => void;
 }
 
 export const useHomeStore = create<HomeState>(set => ({
@@ -50,6 +69,9 @@ export const useHomeStore = create<HomeState>(set => ({
   isLoading: false,
   isRefreshing: false,
   isSearchModalVisible: false,
+  notifications: [],
+  isNotificationModalVisible: false,
+  unreadCount: 0,
 
   // Actions
   setLiveStreams: streams => set({ liveStreams: streams }),
@@ -59,4 +81,23 @@ export const useHomeStore = create<HomeState>(set => ({
   setLoading: loading => set({ isLoading: loading }),
   setRefreshing: refreshing => set({ isRefreshing: refreshing }),
   setSearchModalVisible: visible => set({ isSearchModalVisible: visible }),
+  setNotifications: notifications => {
+    const unreadCount = notifications.filter(n => !n.isRead).length;
+    set({ notifications, unreadCount });
+  },
+  setNotificationModalVisible: visible =>
+    set({ isNotificationModalVisible: visible }),
+  markAllAsRead: () =>
+    set(state => ({
+      notifications: state.notifications.map(n => ({ ...n, isRead: true })),
+      unreadCount: 0,
+    })),
+  markAsRead: id =>
+    set(state => {
+      const notifications = state.notifications.map(n =>
+        n.id === id ? { ...n, isRead: true } : n,
+      );
+      const unreadCount = notifications.filter(n => !n.isRead).length;
+      return { notifications, unreadCount };
+    }),
 }));

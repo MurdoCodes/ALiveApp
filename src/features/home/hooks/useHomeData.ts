@@ -1,5 +1,9 @@
 import { useCallback, useEffect } from 'react';
-import { Country, useHomeStore } from '../../../store/useHomeStore';
+import {
+  Country,
+  Notification,
+  useHomeStore,
+} from '../../../store/useHomeStore';
 // import api from '../../../services/api'; // TODO: uncomment when backend is ready
 import { LiveStream } from '../../../store/useHomeStore';
 
@@ -78,6 +82,53 @@ const MOCK_COUNTRIES: Country[] = [
   { id: 'au', name: 'Australia', flag: '🇦🇺' },
 ];
 
+const MOCK_NOTIFICATIONS: Notification[] = [
+  {
+    id: '1',
+    type: 'follow',
+    title: 'New Follower',
+    message: 'ProGamer123 started following you',
+    avatar: 'https://i.pravatar.cc/150?img=1',
+    timestamp: '2 minutes ago',
+    isRead: false,
+  },
+  {
+    id: '2',
+    type: 'live',
+    title: 'Live Now',
+    message: 'DJBeats just went live! Watch now',
+    avatar: 'https://i.pravatar.cc/150?img=2',
+    timestamp: '15 minutes ago',
+    isRead: false,
+  },
+  {
+    id: '3',
+    type: 'like',
+    title: 'New Like',
+    message: 'ChefMaria liked your stream',
+    avatar: 'https://i.pravatar.cc/150?img=3',
+    timestamp: '1 hour ago',
+    isRead: false,
+  },
+  {
+    id: '4',
+    type: 'comment',
+    title: 'New Comment',
+    message: 'TechGuru commented: "Great stream!"',
+    avatar: 'https://i.pravatar.cc/150?img=5',
+    timestamp: '3 hours ago',
+    isRead: true,
+  },
+  {
+    id: '5',
+    type: 'system',
+    title: 'Welcome to ALive',
+    message: 'Start streaming and connect with the world',
+    timestamp: '1 day ago',
+    isRead: true,
+  },
+];
+
 export const useHomeData = () => {
   const {
     setLiveStreams,
@@ -86,6 +137,7 @@ export const useHomeData = () => {
     setLoading,
     setRefreshing,
     isRefreshing,
+    setNotifications,
   } = useHomeStore();
 
   const fetchHomeData = useCallback(async () => {
@@ -95,12 +147,19 @@ export const useHomeData = () => {
       setLiveStreams(MOCK_LIVE_STREAMS);
       setCountries(MOCK_COUNTRIES);
       setOnlineUsers(12450);
+      setNotifications(MOCK_NOTIFICATIONS);
     } catch (error) {
       console.error('Failed to fetch home data:', error);
     } finally {
       setLoading(false);
     }
-  }, [setLiveStreams, setCountries, setOnlineUsers, setLoading]);
+  }, [
+    setLiveStreams,
+    setCountries,
+    setOnlineUsers,
+    setLoading,
+    setNotifications,
+  ]);
   useEffect(() => {
     fetchHomeData();
   }, [fetchHomeData]);
